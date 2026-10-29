@@ -1,29 +1,58 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Sistema de Solicitud de Documentos Físicos</title>
 </head>
 
-<body style="font-family: Arial; background-color: lightblue;">
+<body style="font-family: Arial; background-color: #f4f6f9; padding:20px;">
 
-    <h1>Sistema de Solicitud de Documentos Físicos</h1>
-
-    <h2>Versión de Prueba</h2>
-
-    <p>Proyecto creado para aprender Git y GitHub.</p>
+    <h1>📄 Sistema de Solicitud de Documentos Físicos</h1>
 
     <hr>
 
-    <label>Solicitante:</label><br>
+    <h2>Nueva Solicitud</h2>
+
+    <p>Número de Solicitud:</p>
+    <input type="text" value="SDF-2026-000001" readonly><br><br>
+
+    <p>Solicitante:</p>
     <input type="text"><br><br>
 
-    <label>Área:</label><br>
+    <p>Área Solicitante:</p>
     <input type="text"><br><br>
 
-    <label>Documento:</label><br>
+    <p>Documento Solicitado:</p>
     <input type="text"><br><br>
 
-    <button>Guardar Solicitud</button>
+    <p>Fecha de Solicitud:</p>
+    <input type="date"><br><br>
+
+    <button style="background-color:green;color:white;padding:10px;">
+        Guardar Solicitud
+    </button>
+
+    <hr>
+
+    <h2>Solicitudes Registradas</h2>
+
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>N° Solicitud</th>
+            <th>Solicitante</th>
+            <th>Área</th>
+            <th>Documento</th>
+        </tr>
+
+        <tr>
+            <td>SDF-2026-000001</td>
+            <td>Juan Pérez</td>
+            <td>Obras</td>
+            <td>Decreto N°125</td>
+        </tr>
+
+    </table>
 
 </body>
+
 </html>
