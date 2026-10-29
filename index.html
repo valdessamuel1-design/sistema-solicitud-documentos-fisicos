@@ -1,107 +1,84 @@
-<!DOCTYPE html>
-<html>
+<script>
 
-<head>
-    <title>Sistema de Solicitud de Documentos Físicos</title>
-</head>
+let contador = 2;
 
-<body style="font-family: Arial; background-color: #f4f6f9; padding:20px;">
+cargarSolicitudes();
 
-    <h1>📄 Sistema de Solicitud de Documentos Físicos</h1>
+function guardarSolicitud() {
 
-    <hr>
+    let solicitante =
+        document.getElementById("solicitante").value;
 
-    <h2>Nueva Solicitud</h2>
+    let area =
+        document.getElementById("area").value;
 
-    <p>Número de Solicitud:</p>
-    <input id="numero" type="text" value="SDF-2026-000002" readonly><br><br>
+    let documento =
+        document.getElementById("documento").value;
 
-    <p>Solicitante:</p>
-    <input id="solicitante" type="text"><br><br>
+    let numero =
+        "SDF-2026-" +
+        String(contador).padStart(6, '0');
 
-    <p>Área Solicitante:</p>
-    <input id="area" type="text"><br><br>
+    let solicitud = {
+        numero,
+        solicitante,
+        area,
+        documento
+    };
 
-    <p>Documento Solicitado:</p>
-    <input id="documento" type="text"><br><br>
+    let solicitudes =
+        JSON.parse(localStorage.getItem("solicitudes")) || [];
 
-    <p>Fecha de Solicitud:</p>
-    <input id="fecha" type="date"><br><br>
+    solicitudes.push(solicitud);
 
-    <button onclick="guardarSolicitud()"
-        style="background-color:green;color:white;padding:10px;">
-        Guardar Solicitud
-    </button>
+    localStorage.setItem(
+        "solicitudes",
+        JSON.stringify(solicitudes)
+    );
 
-    <hr>
+    agregarFila(solicitud);
 
-    <h2>Solicitudes Registradas</h2>
+    contador++;
 
-    <table border="1" cellpadding="8">
-        <thead>
-            <tr>
-                <th>N° Solicitud</th>
-                <th>Solicitante</th>
-                <th>Área</th>
-                <th>Documento</th>
-            </tr>
-        </thead>
+    document.getElementById("numero").value =
+        "SDF-2026-" +
+        String(contador).padStart(6, '0');
 
-        <tbody id="tablaSolicitudes">
+    document.getElementById("solicitante").value = "";
+    document.getElementById("area").value = "";
+    document.getElementById("documento").value = "";
+}
 
-            <tr>
-                <td>SDF-2026-000001</td>
-                <td>Juan Pérez</td>
-                <td>Obras</td>
-                <td>Decreto N°125</td>
-            </tr>
+function agregarFila(solicitud) {
 
-        </tbody>
+    let fila = `
+        <tr>
+            <td>${solicitud.numero}</td>
+            <td>${solicitud.solicitante}</td>
+            <td>${solicitud.area}</td>
+            <td>${solicitud.documento}</td>
+        </tr>
+    `;
 
-    </table>
+    document
+        .getElementById("tablaSolicitudes")
+        .innerHTML += fila;
+}
 
-    <script>
+function cargarSolicitudes() {
 
-        let contador = 2;
+    let solicitudes =
+        JSON.parse(localStorage.getItem("solicitudes")) || [];
 
-        function guardarSolicitud() {
+    solicitudes.forEach(solicitud => {
+        agregarFila(solicitud);
+    });
 
-            let solicitante =
-                document.getElementById("solicitante").value;
+    contador = solicitudes.length + 2;
 
-            let area =
-                document.getElementById("area").value;
+    document.getElementById("numero").value =
+        "SDF-2026-" +
+        String(contador).padStart(6, '0');
+}
 
-            let documento =
-                document.getElementById("documento").value;
-
-            let numero =
-                "SDF-2026-" +
-                String(contador).padStart(6, '0');
-
-            let fila = `
-                <tr>
-                    <td>${numero}</td>
-                    <td>${solicitante}</td>
-                    <td>${area}</td>
-                    <td>${documento}</td>
-                </tr>
-            `;
-
-            document
-                .getElementById("tablaSolicitudes")
-                .innerHTML += fila;
-
-            contador++;
-
-            document.getElementById("numero").value =
-                "SDF-2026-" +
-                String(contador).padStart(6, '0');
-
-        }
-
-    </script>
-
-</body>
-
-</html>
+</script>
