@@ -1,44 +1,36 @@
-@@ -1,29 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
+    <meta charset="UTF-8">
     <title>Sistema de Solicitud de Documentos Físicos</title>
 </head>
 
-<body style="font-family: Arial; background-color: lightblue;">
 <body style="font-family: Arial; background-color: #f4f6f9; padding:20px;">
 
-    <h1>Sistema de Solicitud de Documentos Físicos</h1>
     <h1>📄 Sistema de Solicitud de Documentos Físicos</h1>
 
-    <h2>Versión de Prueba</h2>
     <hr>
 
-    <p>Proyecto creado para aprender Git y GitHub.</p>
     <h2>Nueva Solicitud</h2>
 
-    <hr>
     <p>Número de Solicitud:</p>
-    <input type="text" value="SDF-2026-000001" readonly><br><br>
+    <input id="numero" type="text" readonly><br><br>
 
-    <label>Solicitante:</label><br>
     <p>Solicitante:</p>
-    <input type="text"><br><br>
+    <input id="solicitante" type="text"><br><br>
 
-    <label>Área:</label><br>
     <p>Área Solicitante:</p>
-    <input type="text"><br><br>
+    <input id="area" type="text"><br><br>
 
-    <label>Documento:</label><br>
     <p>Documento Solicitado:</p>
-    <input type="text"><br><br>
+    <input id="documento" type="text"><br><br>
 
-    <button>Guardar Solicitud</button>
     <p>Fecha de Solicitud:</p>
-    <input type="date"><br><br>
+    <input id="fecha" type="date"><br><br>
 
-    <button style="background-color:green;color:white;padding:10px;">
+    <button onclick="guardarSolicitud()"
+        style="background-color:green;color:white;padding:10px;">
         Guardar Solicitud
     </button>
 
@@ -47,21 +39,101 @@
     <h2>Solicitudes Registradas</h2>
 
     <table border="1" cellpadding="8">
-        <tr>
-            <th>N° Solicitud</th>
-            <th>Solicitante</th>
-            <th>Área</th>
-            <th>Documento</th>
-        </tr>
+        <thead>
+            <tr>
+                <th>N° Solicitud</th>
+                <th>Solicitante</th>
+                <th>Área</th>
+                <th>Documento</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
 
-        <tr>
-            <td>SDF-2026-000001</td>
-            <td>Juan Pérez</td>
-            <td>Obras</td>
-            <td>Decreto N°125</td>
-        </tr>
+        <tbody id="tablaSolicitudes">
+        </tbody>
 
     </table>
+
+    <script>
+
+        function obtenerSiguienteNumero() {
+
+            let solicitudes =
+                JSON.parse(localStorage.getItem("solicitudes")) || [];
+
+            let correlativo = solicitudes.length + 1;
+
+            return "SDF-2026-" +
+                String(correlativo).padStart(6, "0");
+        }
+
+        function actualizarNumero() {
+
+            document.getElementById("numero").value =
+                obtenerSiguienteNumero();
+        }
+
+        function guardarSolicitud() {
+
+            let solicitud = {
+                numero: document.getElementById("numero").value,
+                solicitante: document.getElementById("solicitante").value,
+                area: document.getElementById("area").value,
+                documento: document.getElementById("documento").value,
+                fecha: document.getElementById("fecha").value
+            };
+
+            let solicitudes =
+                JSON.parse(localStorage.getItem("solicitudes")) || [];
+
+            solicitudes.push(solicitud);
+
+            localStorage.setItem(
+                "solicitudes",
+                JSON.stringify(solicitudes)
+            );
+
+            agregarFila(solicitud);
+
+            document.getElementById("solicitante").value = "";
+            document.getElementById("area").value = "";
+            document.getElementById("documento").value = "";
+            document.getElementById("fecha").value = "";
+
+            actualizarNumero();
+        }
+
+        function agregarFila(solicitud) {
+
+            let fila = `
+                <tr>
+                    <td>${solicitud.numero}</td>
+                    <td>${solicitud.solicitante}</td>
+                    <td>${solicitud.area}</td>
+                    <td>${solicitud.documento}</td>
+                    <td>${solicitud.fecha}</td>
+                </tr>
+            `;
+
+            document.getElementById("tablaSolicitudes")
+                .insertAdjacentHTML("beforeend", fila);
+        }
+
+        function cargarSolicitudes() {
+
+            let solicitudes =
+                JSON.parse(localStorage.getItem("solicitudes")) || [];
+
+            solicitudes.forEach(function (solicitud) {
+                agregarFila(solicitud);
+            });
+
+            actualizarNumero();
+        }
+
+        cargarSolicitudes();
+
+    </script>
 
 </body>
 
