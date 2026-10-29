@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -45,93 +45,84 @@
                 <th>Solicitante</th>
                 <th>Área</th>
                 <th>Documento</th>
-                <th>Fecha</th>
             </tr>
         </thead>
 
         <tbody id="tablaSolicitudes">
         </tbody>
-
     </table>
 
     <script>
 
-        function obtenerSiguienteNumero() {
-
-            let solicitudes =
-                JSON.parse(localStorage.getItem("solicitudes")) || [];
-
-            let correlativo = solicitudes.length + 1;
-
-            return "SDF-2026-" +
-                String(correlativo).padStart(6, "0");
-        }
+        let solicitudes =
+            JSON.parse(localStorage.getItem("solicitudes")) || [];
 
         function actualizarNumero() {
 
+            let siguiente =
+                solicitudes.length + 1;
+
             document.getElementById("numero").value =
-                obtenerSiguienteNumero();
+                "SDF-2026-" +
+                String(siguiente).padStart(6, '0');
+        }
+
+        function mostrarSolicitudes() {
+
+            let tabla =
+                document.getElementById("tablaSolicitudes");
+
+            tabla.innerHTML = "";
+
+            solicitudes.forEach(function (s) {
+
+                tabla.innerHTML += `
+                <tr>
+                    <td>${s.numero}</td>
+                    <td>${s.solicitante}</td>
+                    <td>${s.area}</td>
+                    <td>${s.documento}</td>
+                </tr>
+                `;
+
+            });
         }
 
         function guardarSolicitud() {
 
-            let solicitud = {
-                numero: document.getElementById("numero").value,
-                solicitante: document.getElementById("solicitante").value,
-                area: document.getElementById("area").value,
-                documento: document.getElementById("documento").value,
-                fecha: document.getElementById("fecha").value
+            let nuevaSolicitud = {
+
+                numero:
+                    document.getElementById("numero").value,
+
+                solicitante:
+                    document.getElementById("solicitante").value,
+
+                area:
+                    document.getElementById("area").value,
+
+                documento:
+                    document.getElementById("documento").value
             };
 
-            let solicitudes =
-                JSON.parse(localStorage.getItem("solicitudes")) || [];
-
-            solicitudes.push(solicitud);
+            solicitudes.push(nuevaSolicitud);
 
             localStorage.setItem(
                 "solicitudes",
                 JSON.stringify(solicitudes)
             );
 
-            agregarFila(solicitud);
+            mostrarSolicitudes();
+
+            actualizarNumero();
 
             document.getElementById("solicitante").value = "";
             document.getElementById("area").value = "";
             document.getElementById("documento").value = "";
-            document.getElementById("fecha").value = "";
-
-            actualizarNumero();
         }
 
-        function agregarFila(solicitud) {
-
-            let fila = `
-                <tr>
-                    <td>${solicitud.numero}</td>
-                    <td>${solicitud.solicitante}</td>
-                    <td>${solicitud.area}</td>
-                    <td>${solicitud.documento}</td>
-                    <td>${solicitud.fecha}</td>
-                </tr>
-            `;
-
-            document.getElementById("tablaSolicitudes")
-                .insertAdjacentHTML("beforeend", fila);
-        }
-
-        function cargarSolicitudes() {
-
-            let solicitudes =
-                JSON.parse(localStorage.getItem("solicitudes")) || [];
-
-            solicitudes.forEach(function (solicitud) {
-                agregarFila(solicitud);
-            });
-
-            actualizarNumero();
-        }
-
-        cargarSolicitudes();
+        mostrarSolicitudes();
+        actualizarNumero();
 
     </script>
 
