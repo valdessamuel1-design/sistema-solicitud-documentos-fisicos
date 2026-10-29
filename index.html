@@ -1,84 +1,68 @@
-<script>
+@@ -1,29 +1,58 @@
+<!DOCTYPE html>
+<html>
 
-let contador = 2;
+<head>
+    <title>Sistema de Solicitud de Documentos Físicos</title>
+</head>
 
-cargarSolicitudes();
+<body style="font-family: Arial; background-color: lightblue;">
+<body style="font-family: Arial; background-color: #f4f6f9; padding:20px;">
 
-function guardarSolicitud() {
+    <h1>Sistema de Solicitud de Documentos Físicos</h1>
+    <h1>📄 Sistema de Solicitud de Documentos Físicos</h1>
 
-    let solicitante =
-        document.getElementById("solicitante").value;
+    <h2>Versión de Prueba</h2>
+    <hr>
 
-    let area =
-        document.getElementById("area").value;
+    <p>Proyecto creado para aprender Git y GitHub.</p>
+    <h2>Nueva Solicitud</h2>
 
-    let documento =
-        document.getElementById("documento").value;
+    <hr>
+    <p>Número de Solicitud:</p>
+    <input type="text" value="SDF-2026-000001" readonly><br><br>
 
-    let numero =
-        "SDF-2026-" +
-        String(contador).padStart(6, '0');
+    <label>Solicitante:</label><br>
+    <p>Solicitante:</p>
+    <input type="text"><br><br>
 
-    let solicitud = {
-        numero,
-        solicitante,
-        area,
-        documento
-    };
+    <label>Área:</label><br>
+    <p>Área Solicitante:</p>
+    <input type="text"><br><br>
 
-    let solicitudes =
-        JSON.parse(localStorage.getItem("solicitudes")) || [];
+    <label>Documento:</label><br>
+    <p>Documento Solicitado:</p>
+    <input type="text"><br><br>
 
-    solicitudes.push(solicitud);
+    <button>Guardar Solicitud</button>
+    <p>Fecha de Solicitud:</p>
+    <input type="date"><br><br>
 
-    localStorage.setItem(
-        "solicitudes",
-        JSON.stringify(solicitudes)
-    );
+    <button style="background-color:green;color:white;padding:10px;">
+        Guardar Solicitud
+    </button>
 
-    agregarFila(solicitud);
+    <hr>
 
-    contador++;
+    <h2>Solicitudes Registradas</h2>
 
-    document.getElementById("numero").value =
-        "SDF-2026-" +
-        String(contador).padStart(6, '0');
-
-    document.getElementById("solicitante").value = "";
-    document.getElementById("area").value = "";
-    document.getElementById("documento").value = "";
-}
-
-function agregarFila(solicitud) {
-
-    let fila = `
+    <table border="1" cellpadding="8">
         <tr>
-            <td>${solicitud.numero}</td>
-            <td>${solicitud.solicitante}</td>
-            <td>${solicitud.area}</td>
-            <td>${solicitud.documento}</td>
+            <th>N° Solicitud</th>
+            <th>Solicitante</th>
+            <th>Área</th>
+            <th>Documento</th>
         </tr>
-    `;
 
-    document
-        .getElementById("tablaSolicitudes")
-        .innerHTML += fila;
-}
+        <tr>
+            <td>SDF-2026-000001</td>
+            <td>Juan Pérez</td>
+            <td>Obras</td>
+            <td>Decreto N°125</td>
+        </tr>
 
-function cargarSolicitudes() {
+    </table>
 
-    let solicitudes =
-        JSON.parse(localStorage.getItem("solicitudes")) || [];
+</body>
 
-    solicitudes.forEach(solicitud => {
-        agregarFila(solicitud);
-    });
-
-    contador = solicitudes.length + 2;
-
-    document.getElementById("numero").value =
-        "SDF-2026-" +
-        String(contador).padStart(6, '0');
-}
-
-</script>
+</html>
